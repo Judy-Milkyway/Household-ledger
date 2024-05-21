@@ -1,118 +1,176 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
+import { Button, DatePicker, Drawer, Form, InputNumber, Radio, Select, Table, TableProps } from 'antd';
+import { useState, useSyncExternalStore } from "react";
+import dayjs, { Dayjs } from "dayjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+
+  const [open, setOpen] = useState(false);
+  const [moneyType, setMoneyType] = useState('支出')
+  const [showType, setShowType] = useState('表格展示')
+
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  interface DataType {
+    key: string;
+    role: string;
+    moneytype: string;
+    type: string;
+    date: Dayjs;
+    money: number;
+
+  }
+
+
+  const columns: TableProps<DataType>['columns'] = [
+    {
+      title: '角色',
+      dataIndex: 'role',
+      key: 'role',
+    },
+    {
+      title: '支出/收入',
+      dataIndex: 'moneytype',
+      key: 'moneytype',
+    },
+    {
+      title: '类型',
+      dataIndex: 'type',
+      key: 'type',
+    },
+    {
+      title: '日期',
+      dataIndex: 'date',
+      key: 'date',
+      render: (date: Dayjs) => date.format('YYYY-MM-DD')
+    },
+    {
+      title: '价值',
+      dataIndex: 'money',
+      key: 'money',
+    },
+  ]
+
+  const data: DataType[] = [
+    {
+      key: '1',
+      role: '父亲',
+      moneytype: '收入',
+      type: '工资',
+      date: dayjs('2024-05-12'),
+      money: 5000,
+    },
+  ]
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="w-screen h-screen">
+      <div className='w-full h-[10%] bg-slate-100 flex justify-between items-center pl-[40px] pr-[40px]'>
+        <span className="text-2xl font-bold leading-[80px]">家庭记账本</span>
+        <span className="text-2xl text-slate-400 leading-[80px]" onClick={() => { showDrawer() }}>添加</span>
+
+      </div>
+      <div className="w-full h-[90%] bg-slate-50 flex flex-col items-center">
+        <div className="w-[90%] h-[100px] shadow-lg shadow-slate-200 rounded-lg mt-[40px] flex items-center justify-evenly">
+          <div className="flex flex-col justify-center items-center">
+            <div className="text-xl font-bold text-slate-500">本月支出:</div>
+            <div className="text-2xl font-bold">0.00</div>
+          </div>
+          <div className="flex flex-col justify-center items-center">
+            <div className="text-xl font-bold text-slate-500">本月收入:</div>
+            <div className="text-2xl font-bold">0.00</div>
+          </div>
+          <div className="flex flex-col justify-center items-center">
+            <div className="text-xl font-bold text-slate-500">本月结余:</div>
+            <div className="text-2xl font-bold">0.00</div>
+          </div>
+
+
+        </div>
+        <div className="mt-[40px]">
+          <Radio.Group onChange={(e) => { setShowType(e.target.value) }} defaultValue="表格展示">
+            <Radio.Button value="表格展示">表格展示</Radio.Button>
+            <Radio.Button value="图表展示">图表展示</Radio.Button>
+            <Radio.Button value="纯文字展示">纯文字展示</Radio.Button>
+          </Radio.Group>
+        </div>
+        <div className="mt-[20px]">
+          {showType === '表格展示' && <Table columns={columns} dataSource={data} className="w-[700px] max-h-[400px]" />}
         </div>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      <Drawer
+        title="添加记录"
+        // closable={false}
+        onClose={onClose}
+        open={open}
+        width={500}
+      >
+        <Form
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
+          //  labelCol={{ span: 4 }}
+          //  wrapperCol={{ span: 14 }}
+          layout="horizontal"
+          style={{ maxWidth: 450 }}
         >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+          <Form.Item label="家庭成员">
+            <Select>
+              <Select.Option value="father">爸爸</Select.Option>
+              <Select.Option value="mother">妈妈</Select.Option>
+              <Select.Option value="child">孩子</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item label="支出/收入">
+            <Select
+              onChange={(value) => { setMoneyType(value) }}
+            >
+              <Select.Option value="支出">支出</Select.Option>
+              <Select.Option value="收入">收入</Select.Option>
+            </Select>
+          </Form.Item>
+          {moneyType === '支出' && <Form.Item label="类别">
+            <Select>
+              <Select.Option value="三餐">三餐</Select.Option>
+              <Select.Option value="日用品">日用品</Select.Option>
+              <Select.Option value="衣服">衣服</Select.Option>
+              <Select.Option value="交通">交通</Select.Option>
+              <Select.Option value="话费网费">话费网费</Select.Option>
+              <Select.Option value="医疗">医疗</Select.Option>
+              <Select.Option value="住房">住房</Select.Option>
+              <Select.Option value="其他">其他</Select.Option>
+            </Select>
+          </Form.Item>}
+          {moneyType === '收入' && <Form.Item label="类别">
+            <Select>
+              <Select.Option value="工资">工资</Select.Option>
+              <Select.Option value="投资">投资</Select.Option>
+              <Select.Option value="奖金">奖金</Select.Option>
+              <Select.Option value="其他">其他</Select.Option>
+            </Select>
+          </Form.Item>}
+          <Form.Item label="日期">
+            <DatePicker onChange={((date, dateString) => { console.log(date, "string", dateString) })} />
+          </Form.Item>
+          <Form.Item label="价值">
+            <InputNumber prefix="￥" style={{ width: '100%' }} />
+          </Form.Item>y
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Drawer>
+    </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
   );
 }
