@@ -9,7 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "antd": "^5.17.2",
+    "@ant-design/cssinjs": "^1.20.0",
+    "antd": "^5.17.3",
     "dayjs": "^1.11.11",
     "next": "14.2.3",
     "react": "^18",
