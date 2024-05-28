@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import { Button, DatePicker, Drawer, Form, InputNumber, Radio, Select, Table, TableProps } from 'antd';
+import { Button, DatePicker, Drawer, Form, InputNumber, Radio, Select, Table, TableProps } from 'antd/lib';
 import { useState, useSyncExternalStore } from "react";
 import dayjs, { Dayjs } from "dayjs";
 
@@ -37,16 +37,93 @@ export default function Home() {
       title: '角色',
       dataIndex: 'role',
       key: 'role',
+      filters: [
+        {
+          text: '爸爸',
+          value: '爸爸'
+        }, {
+          text: '妈妈',
+          value: '妈妈'
+        }, {
+          text: '孩子',
+          value: '孩子'
+        },
+      ],
+      onFilter: (value, record) => record.role.indexOf(value as string) === 0,
     },
     {
       title: '支出/收入',
       dataIndex: 'moneytype',
       key: 'moneytype',
+      filters: [
+        {
+          text: '支出',
+          value: '支出'
+        }, {
+          text: '收入',
+          value: '收入'
+        },
+      ],
+      onFilter: (value, record) => record.moneytype.indexOf(value as string) === 0,
     },
     {
       title: '类型',
       dataIndex: 'type',
       key: 'type',
+      filters: [
+        {
+          text: '支出',
+          value: '支出',
+          children: [
+            {
+              text: '三餐',
+              value: '三餐',
+            },
+            {
+              text: '交通',
+              value: '交通',
+            }, {
+              text: '日用品',
+              value: '日用品',
+            }, {
+              text: '衣服',
+              value: '衣服',
+            }, {
+              text: '话费网费',
+              value: '话费网费',
+            }, {
+              text: '医疗',
+              value: '医疗',
+            }, {
+              text: '住房',
+              value: '住房',
+            }, {
+              text: '其他',
+              value: '其他',
+            }
+          ],
+        }, {
+          text: '收入',
+          value: '收入',
+          children: [
+            {
+              text: '工资',
+              value: '工资',
+            },
+            {
+              text: '投资',
+              value: '投资',
+            }, {
+              text: '奖金',
+              value: '奖金',
+            }, {
+              text: '其他',
+              value: '其他',
+            },
+          ],
+        },
+      ],
+      onFilter: (value, record) => record.type.indexOf(value as string) === 0,
     },
     {
       title: '日期',
@@ -58,17 +135,29 @@ export default function Home() {
       title: '价值',
       dataIndex: 'money',
       key: 'money',
+      sorter: {
+        compare: (a, b) => a.money - b.money,
+        multiple: 1,
+      },
+
     },
   ]
 
   const data: DataType[] = [
     {
       key: '1',
-      role: '父亲',
+      role: '爸爸',
       moneytype: '收入',
       type: '工资',
       date: dayjs('2024-05-12'),
       money: 5000,
+    }, {
+      key: '2',
+      role: '妈妈',
+      moneytype: '支出',
+      type: '三餐',
+      date: dayjs('2024-05-18'),
+      money: 120,
     },
   ]
   return (
@@ -161,7 +250,7 @@ export default function Home() {
           </Form.Item>
           <Form.Item label="价值">
             <InputNumber prefix="￥" style={{ width: '100%' }} />
-          </Form.Item>y
+          </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
               Submit
