@@ -18,7 +18,7 @@ export default function Login() {
 
     return (
         <div className="w-[100vw] h-[100vh] bg-gradient-to-b from-indigo-300">
-            {loginType === 'signIn' ? <div className="w-[500px] h-[400px] border-solid border-indigo-200 border-2 rounded absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] drop-shadow-md flex flex-col items-center justify-between">
+            {loginType === 'signIn' ? <div className="w-[500px] h-[400px] bg-[#fff] border-solid border-indigo-200 border-2 rounded-[16px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] drop-shadow-md flex flex-col items-center justify-between">
                 <div className="text-3xl font-medium text-indigo-400 tracking-widest text-center mt-[20px]">登陆</div>
                 <Form
                     name="basic"
@@ -56,7 +56,7 @@ export default function Login() {
                         </Button>
                     </Form.Item>
                 </Form>
-            </div> : <div className="w-[500px] h-[400px] border-solid border-indigo-200 border-2 rounded absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] drop-shadow-md flex flex-col items-center justify-between">
+            </div> : <div className="w-[500px] h-[400px] bg-[#fff] border-solid border-indigo-200 border-2 rounded-[16px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] drop-shadow-md flex flex-col items-center justify-between">
                 <div className="text-3xl font-medium text-indigo-400 tracking-widest text-center mt-[20px]">注册</div>
                 <Form
                     name="basic"
