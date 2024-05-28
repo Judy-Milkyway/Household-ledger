@@ -158,7 +158,49 @@ export default function Home() {
       type: '三餐',
       date: dayjs('2024-05-18'),
       money: 120,
-    },
+    }, {
+      key: '3',
+      role: '妈妈',
+      moneytype: '收入',
+      type: '工资',
+      date: dayjs('2024-05-10'),
+      money: 5000,
+    }, {
+      key: '4',
+      role: '孩子',
+      moneytype: '支出',
+      type: '日用品',
+      date: dayjs('2024-05-14'),
+      money: 50,
+    }, {
+      key: '5',
+      role: '爸爸',
+      moneytype: '支出',
+      type: '交通',
+      date: dayjs('2024-05-22'),
+      money: 200,
+    }, {
+      key: '6',
+      role: '妈妈',
+      moneytype: '收入',
+      type: '投资',
+      date: dayjs('2024-05-24'),
+      money: 1000,
+    }, {
+      key: '7',
+      role: '孩子',
+      moneytype: '支出',
+      type: '交通',
+      date: dayjs('2024-05-25'),
+      money: 15,
+    }, {
+      key: '8',
+      role: '爸爸',
+      moneytype: '收入',
+      type: '投资',
+      date: dayjs('2024-05-29'),
+      money: 1000,
+    }
   ]
   return (
     <div className="w-screen h-screen">
