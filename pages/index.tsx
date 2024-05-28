@@ -205,7 +205,7 @@ export default function Home() {
   ]
 
   const items = [
-    { key: '1', label: '当月情况' }, { key: '2', label: '表格展示' }, { key: '3', label: '图标展示' }, { key: '4', label: '纯文字展示' }
+    { key: '1', label: '当月情况' }, { key: '2', label: '表格展示' }, { key: '3', label: '图表展示' }, { key: '4', label: '纯文字展示' }
   ]
 
   return (
@@ -215,10 +215,10 @@ export default function Home() {
         <span className="text-2xl text-slate-400 leading-[80px]" onClick={() => { showDrawer() }}>添加</span>
       </div>
       <div className="flex">
-        <div className="w-[20%] h-[90%]">
+        <div className="w-[20%] h-screen">
           <Menu className="w-[100%]" defaultSelectedKeys={['1']} items={items} onClick={(item) => { setShowType(item.key) }}></Menu>
         </div>
-        {showType === '1' && <div className="w-[80%] h-[90%] bg-slate-50 flex flex-col items-center">
+        {showType === '1' && <div className="w-[80%] h-[screen] bg-slate-50 flex flex-col items-center">
           <div className="w-[90%] h-[100px] shadow-lg shadow-slate-200 rounded-lg mt-[40px] flex items-center justify-evenly">
             <div className="flex flex-col justify-center items-center">
               <div className="text-xl font-bold text-slate-500">本月支出:</div>
@@ -236,7 +236,7 @@ export default function Home() {
           <div className="mt-[20px]">
           </div>
         </div>}
-        {showType === '2' && <Table columns={columns} dataSource={data} className="w-[700px] max-h-[400px]" />}
+        {showType === '2' && <div className="w-[80%] h-[screen] bg-slate-50 flex flex-col items-center"><Table columns={columns} dataSource={data} className="w-[700px] max-h-[400px]" /></div>}
       </div>
 
 
