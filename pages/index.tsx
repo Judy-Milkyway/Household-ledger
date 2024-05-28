@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import { Button, DatePicker, Drawer, Form, InputNumber, Radio, Select, Table, TableProps } from 'antd/lib';
 import { useState, useSyncExternalStore } from "react";
 import dayjs, { Dayjs } from "dayjs";
+import { Menu } from "antd";
+import { MenuItemType } from "antd/es/menu/interface";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,7 +12,7 @@ export default function Home() {
 
   const [open, setOpen] = useState(false);
   const [moneyType, setMoneyType] = useState('支出')
-  const [showType, setShowType] = useState('表格展示')
+  const [showType, setShowType] = useState('1')
 
 
   const showDrawer = () => {
@@ -30,7 +32,6 @@ export default function Home() {
     money: number;
 
   }
-
 
   const columns: TableProps<DataType>['columns'] = [
     {
@@ -202,41 +203,42 @@ export default function Home() {
       money: 1000,
     }
   ]
+
+  const items = [
+    { key: '1', label: '当月情况' }, { key: '2', label: '表格展示' }, { key: '3', label: '图标展示' }, { key: '4', label: '纯文字展示' }
+  ]
+
   return (
     <div className="w-screen h-screen">
       <div className='w-full h-[10%] bg-slate-100 flex justify-between items-center pl-[40px] pr-[40px]'>
         <span className="text-2xl font-bold leading-[80px]">家庭记账本</span>
         <span className="text-2xl text-slate-400 leading-[80px]" onClick={() => { showDrawer() }}>添加</span>
-
       </div>
-      <div className="w-full h-[90%] bg-slate-50 flex flex-col items-center">
-        <div className="w-[90%] h-[100px] shadow-lg shadow-slate-200 rounded-lg mt-[40px] flex items-center justify-evenly">
-          <div className="flex flex-col justify-center items-center">
-            <div className="text-xl font-bold text-slate-500">本月支出:</div>
-            <div className="text-2xl font-bold">0.00</div>
-          </div>
-          <div className="flex flex-col justify-center items-center">
-            <div className="text-xl font-bold text-slate-500">本月收入:</div>
-            <div className="text-2xl font-bold">0.00</div>
-          </div>
-          <div className="flex flex-col justify-center items-center">
-            <div className="text-xl font-bold text-slate-500">本月结余:</div>
-            <div className="text-2xl font-bold">0.00</div>
-          </div>
-
-
+      <div className="flex">
+        <div className="w-[20%] h-[90%]">
+          <Menu className="w-[100%]" defaultSelectedKeys={['1']} items={items} onClick={(item) => { setShowType(item.key) }}></Menu>
         </div>
-        <div className="mt-[40px]">
-          <Radio.Group onChange={(e) => { setShowType(e.target.value) }} defaultValue="表格展示">
-            <Radio.Button value="表格展示">表格展示</Radio.Button>
-            <Radio.Button value="图表展示">图表展示</Radio.Button>
-            <Radio.Button value="纯文字展示">纯文字展示</Radio.Button>
-          </Radio.Group>
-        </div>
-        <div className="mt-[20px]">
-          {showType === '表格展示' && <Table columns={columns} dataSource={data} className="w-[700px] max-h-[400px]" />}
-        </div>
+        {showType === '1' && <div className="w-[80%] h-[90%] bg-slate-50 flex flex-col items-center">
+          <div className="w-[90%] h-[100px] shadow-lg shadow-slate-200 rounded-lg mt-[40px] flex items-center justify-evenly">
+            <div className="flex flex-col justify-center items-center">
+              <div className="text-xl font-bold text-slate-500">本月支出:</div>
+              <div className="text-2xl font-bold">0.00</div>
+            </div>
+            <div className="flex flex-col justify-center items-center">
+              <div className="text-xl font-bold text-slate-500">本月收入:</div>
+              <div className="text-2xl font-bold">0.00</div>
+            </div>
+            <div className="flex flex-col justify-center items-center">
+              <div className="text-xl font-bold text-slate-500">本月结余:</div>
+              <div className="text-2xl font-bold">0.00</div>
+            </div>
+          </div>
+          <div className="mt-[20px]">
+          </div>
+        </div>}
+        {showType === '2' && <Table columns={columns} dataSource={data} className="w-[700px] max-h-[400px]" />}
       </div>
+
 
       <Drawer
         title="添加记录"
