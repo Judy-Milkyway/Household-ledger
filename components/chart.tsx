@@ -1,82 +1,131 @@
 import React, { useEffect, useState } from "react";
 import ReactECharts from "echarts-for-react";
-import MockData from '@/mock/data'
+import { DataType, data } from "@/mock/data";
+const dayjs = require('dayjs');
 
 const Page: React.FC = () => {
   const [options, setOptions] = useState({});
 
-  useEffect(()=>{
+  //当月的日期数组
+  function getCurrentMonthDays() {
+    const now = dayjs();
+    const daysInMonth = now.daysInMonth();
+    const daysArray = Array.from({ length: daysInMonth }, (v, k) => k + 1);
+    return daysArray;
+  }
+
+  //当月的每日支出数组
+  function getMonthlyExpenditures(data) {
+    const now = dayjs();
+    const currentMonth = now.month();
+    const currentYear = now.year();
+    const daysInMonth = now.daysInMonth();
+
+    const expenditures = Array.from({ length: daysInMonth }, () => 0);
+
+    data.forEach(record => {
+      const recordDate = dayjs(record.date);
+      if (recordDate.month() === currentMonth && recordDate.year() === currentYear && record.moneytype === "支出") {
+        const day = recordDate.date();
+        expenditures[day - 1] += record.money;
+      }
+    });
+    return expenditures;
+  }
+
+  //当月的每日收入数组
+  function getMonthlyIncome(data) {
+    const now = dayjs();
+    const currentMonth = now.month();
+    const currentYear = now.year();
+    const daysInMonth = now.daysInMonth();
+
+    const income = Array.from({ length: daysInMonth }, () => 0);
+
+    data.forEach(record => {
+      const recordDate = dayjs(record.date);
+      if (recordDate.month() === currentMonth && recordDate.year() === currentYear && record.moneytype === "收入") {
+        const day = recordDate.date();
+        income[day - 1] += record.money;
+      }
+    });
+    return income;
+  }
+
+  const monthlyExpenditures = getMonthlyExpenditures(data);
+  const monthlyIncome = getMonthlyIncome(data);
+  const daysInCurrentMonth = getCurrentMonthDays();
+
+  useEffect(() => {
     setOptions({
-        tooltip: {
-          trigger: 'axis',
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          crossStyle: {
+            color: '#999'
+          }
+        }
+      },
+      legend: {
+        data: ['收入', '支出']
+      },
+      xAxis: [
+        {
+          type: 'category',
+          data: daysInCurrentMonth,
           axisPointer: {
-            type: 'cross',
-            crossStyle: {
-              color: '#999'
-            }
+            type: 'shadow'
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          name: '收入',
+          min: 0,
+          max: 7500,
+          interval: 1500,
+          axisLabel: {
+            formatter: '¥{value}'
           }
         },
-        legend: {
-          data: [ 'Precipitation', 'Temperature']
+        {
+          type: 'value',
+          name: '支出',
+          min: 0,
+          max: 7500,
+          interval: 1500,
+          axisLabel: {
+            formatter: '¥{value}'
+          }
+        }
+      ],
+      series: [
+        {
+          name: '收入',
+          type: 'bar',
+          tooltip: {
+            valueFormatter: function (value) {
+              return value + ' ¥ ';
+            }
+          },
+          data: monthlyIncome,
         },
-        xAxis: [
-          {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            axisPointer: {
-              type: 'shadow'
-            }
-          }
-        ],
-        yAxis: [
-          {
-            type: 'value',
-            name: 'Precipitation',
-            min: 0,
-            max: 250,
-            interval: 50,
-            axisLabel: {
-              formatter: '{value} ml'
+        {
+          name: '支出',
+          type: 'line',
+          yAxisIndex: 1,
+          tooltip: {
+            valueFormatter: function (value) {
+              return value + ' ¥';
             }
           },
-          {
-            type: 'value',
-            name: 'Temperature',
-            min: 0,
-            max: 25,
-            interval: 5,
-            axisLabel: {
-              formatter: '{value} °C'
-            }
-          }
-        ],
-        series: [
-          {
-            name: 'Precipitation',
-            type: 'bar',
-            tooltip: {
-              valueFormatter: function (value) {
-                return value + ' ml';
-              }
-            },
-            data: [
-              2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3
-            ]
-          },
-          {
-            name: 'Temperature',
-            type: 'line',
-            yAxisIndex: 1,
-            tooltip: {
-              valueFormatter: function (value) {
-                return value + ' °C';
-              }
-            },
-            data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
-          }
-        ]
-      })
-  },[])
+          data: monthlyExpenditures,
+        }
+      ]
+    })
+  }, [])
 
   return <ReactECharts option={options} style={{ height: '400px', width: '100%' }} />;
 };

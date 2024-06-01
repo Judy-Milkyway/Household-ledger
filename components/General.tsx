@@ -2,8 +2,8 @@
 import dynamic from "next/dynamic";
 import { useState } from "react";
 const Doubleaxes = dynamic(() => import("./chart"), {
-    ssr: false,
-  });
+  ssr: false,
+});
 
 export default function General() {
 
