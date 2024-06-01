@@ -148,6 +148,8 @@ export default function Home() {
       dataIndex: "date",
       key: "date",
       render: (date: string) => dayjs(date).format("YYYY-MM-DD"),
+      filters: getDateFilters(),
+      onFilter: (value, record) => filterByDate(value as string, record.date),
     },
     {
       title: "价值",
@@ -159,6 +161,42 @@ export default function Home() {
       },
     },
   ];
+
+  function getDateFilters() {
+    const years = new Set<string>();
+    const months = new Set<string>();
+    const days = new Set<string>();
+
+    data.forEach(record => {
+      const date = dayjs(record.date);
+      years.add(date.format("YYYY"));
+      months.add(date.format("YYYY-MM"));
+      days.add(date.format("YYYY-MM-DD"));
+    });
+
+    return [
+      {
+        text: 'Year',
+        value: 'year',
+        children: Array.from(years).map(year => ({ text: year, value: year })),
+      },
+      {
+        text: 'Month',
+        value: 'month',
+        children: Array.from(months).map(month => ({ text: month, value: month })),
+      },
+      {
+        text: 'Day',
+        value: 'day',
+        children: Array.from(days).map(day => ({ text: day, value: day })),
+      },
+    ];
+  }
+
+  function filterByDate(value: string, date: string) {
+    const dateFormat = value.length === 4 ? 'YYYY' : value.length === 7 ? 'YYYY-MM' : 'YYYY-MM-DD';
+    return dayjs(date).format(dateFormat) === value;
+  }
 
 
 
