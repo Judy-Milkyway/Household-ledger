@@ -4,6 +4,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  experimental: {
+    esmExternals: "loose",
+  },
   transpilePackages: [
     "antd",
     "@ant-design",
@@ -15,6 +18,10 @@ const nextConfig = {
     "@douyinfe/semi-ui",
     "@douyinfe/semi-icons",
     "@douyinfe/semi-illustrations",
+    "bizcharts",
+    "d3-color",
+    'd3-interpolate',
+    '@antv'
   ],
 };
 
