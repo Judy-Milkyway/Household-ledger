@@ -19,6 +19,7 @@ import { MenuItemType } from "antd/es/menu/interface";
 import dynamic from "next/dynamic";
 import General from "@/components/General";
 import { DataType, data } from "@/mock/data";
+import Graph from "@/components/Graph";
 
 dayjs.extend(isoWeek);
 const inter = Inter({ subsets: ["latin"] });
@@ -253,6 +254,11 @@ export default function Home() {
             />
           </div>
         )}
+        {
+          showType === '3' && (
+            <Graph />
+          )
+        }
       </div>
 
       <Drawer
