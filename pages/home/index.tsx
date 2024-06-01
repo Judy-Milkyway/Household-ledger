@@ -162,6 +162,14 @@ export default function Home() {
         multiple: 1,
       },
     },
+    {
+      title: '操作',
+      key: '操作',
+      render: (_, record) => (
+        <a>删除</a>
+      ),
+    },
+
   ];
 
   function getDateFilters() {

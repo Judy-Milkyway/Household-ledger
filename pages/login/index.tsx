@@ -64,7 +64,7 @@ export default function Login() {
                 fieldStyle={{ alignSelf: "stretch", padding: 0 }}
               />
             </Form>
-            <Checkbox type="default">记住我</Checkbox>
+            <a>注册</a>
             <Button
               theme="solid"
               className={styles.button}
