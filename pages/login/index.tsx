@@ -15,7 +15,7 @@ export default function Login() {
       Cookies.set("token", 123);
 
       setTimeout(() => {
-        Toast.success("登陆成功");
+        Toast.success("登录成功");
         router.push("/");
       }, 2000);
     } else {

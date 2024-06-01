@@ -226,6 +226,7 @@ export default function Home() {
     { key: "1", label: "当月情况" },
     { key: "2", label: "表格展示" },
     { key: "3", label: "图表展示" },
+    { key: '4', label: '退出登录' }
   ];
 
   return (
