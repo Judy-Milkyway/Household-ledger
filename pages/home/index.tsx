@@ -13,13 +13,14 @@ import {
 } from "antd/lib";
 import { useState, useSyncExternalStore } from "react";
 import dayjs, { Dayjs } from "dayjs";
+import isoWeek from 'dayjs/plugin/isoWeek';
 import { Menu } from "antd";
 import { MenuItemType } from "antd/es/menu/interface";
 import dynamic from "next/dynamic";
 import General from "@/components/General";
 import { DataType, data } from "@/mock/data";
 
-
+dayjs.extend(isoWeek);
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -165,12 +166,14 @@ export default function Home() {
   function getDateFilters() {
     const years = new Set<string>();
     const months = new Set<string>();
+    const weeks = new Set<string>();
     const days = new Set<string>();
 
     data.forEach(record => {
       const date = dayjs(record.date);
       years.add(date.format("YYYY"));
       months.add(date.format("YYYY-MM"));
+      weeks.add(`${date.isoWeekYear()}-W${date.isoWeek()}`);
       days.add(date.format("YYYY-MM-DD"));
     });
 
@@ -186,6 +189,11 @@ export default function Home() {
         children: Array.from(months).map(month => ({ text: month, value: month })),
       },
       {
+        text: 'Week',
+        value: 'week',
+        children: Array.from(weeks).map(week => ({ text: week, value: week })),
+      },
+      {
         text: 'Day',
         value: 'day',
         children: Array.from(days).map(day => ({ text: day, value: day })),
@@ -194,6 +202,11 @@ export default function Home() {
   }
 
   function filterByDate(value: string, date: string) {
+    if (value.includes('W')) {
+      const [year, week] = value.split('-W');
+      return dayjs(date).isoWeekYear() === parseInt(year) && dayjs(date).isoWeek() === parseInt(week);
+    }
+
     const dateFormat = value.length === 4 ? 'YYYY' : value.length === 7 ? 'YYYY-MM' : 'YYYY-MM-DD';
     return dayjs(date).format(dateFormat) === value;
   }
