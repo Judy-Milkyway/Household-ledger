@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import ReactECharts from "echarts-for-react";
-import { DataType, data } from "@/mock/data";
+import useDataStore from "@/store";
 const dayjs = require('dayjs');
 
 const Page: React.FC = () => {
   const [options, setOptions] = useState({});
+  const data = useDataStore((state) => state.data)
+  console.log('month', data)
 
   //当月的日期数组
   function getCurrentMonthDays() {
@@ -125,7 +127,7 @@ const Page: React.FC = () => {
         }
       ]
     })
-  }, [])
+  }, [data])
 
   return <ReactECharts option={options} style={{ height: '400px', width: '100%' }} />;
 };

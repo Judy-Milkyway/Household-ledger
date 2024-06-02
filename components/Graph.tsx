@@ -1,11 +1,13 @@
 import { Cascader, Select } from "antd";
 import ReactECharts from "echarts-for-react";
-import { DataType, data } from "@/mock/data";
 import { useState, useEffect } from "react";
 import dayjs from 'dayjs';
+import useDataStore from "@/store";
 
 
 export default function Graph() {
+  const data = useDataStore((state) => state.data)
+
   const getInitialOptions = () => {
     const expenditureByType = data.filter(item => item.moneytype === '支出')
       .reduce((acc, curr) => {

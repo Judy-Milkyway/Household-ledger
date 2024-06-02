@@ -1,13 +1,14 @@
 
+import useDataStore from "@/store";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { DataType, data } from "@/mock/data";
 const dayjs = require('dayjs');
 const Doubleaxes = dynamic(() => import("./chart"), {
   ssr: false,
 });
 
 export default function General() {
+  const data = useDataStore((state) => state.data)
 
   function calculateMonthlySummary(data) {
     const now = dayjs();

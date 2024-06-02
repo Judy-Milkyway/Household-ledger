@@ -18,8 +18,9 @@ import { Menu } from "antd";
 import { MenuItemType } from "antd/es/menu/interface";
 import dynamic from "next/dynamic";
 import General from "@/components/General";
-import { DataType, data } from "@/mock/data";
+import { DataType } from "@/mock/data";
 import Graph from "@/components/Graph";
+import useDataStore from "@/store";
 
 dayjs.extend(isoWeek);
 const inter = Inter({ subsets: ["latin"] });
@@ -28,6 +29,9 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   const [moneyType, setMoneyType] = useState("支出");
   const [showType, setShowType] = useState("1");
+  const [data, fetchData] = useDataStore((state) => [state.data, state.fetch])
+  console.log(data)
+
 
   const showDrawer = () => {
     setOpen(true);
@@ -220,15 +224,16 @@ export default function Home() {
     return dayjs(date).format(dateFormat) === value;
   }
 
-  const getData = async () =>{
+  const getData = async () => {
     const data = await fetch('/api/data')
     console.log(data)
   }
 
 
-  useEffect(()=>{
-    getData()
-  },[])
+  useEffect(() => {
+    // getData();
+    fetchData();
+  }, [])
 
 
   const items = [
