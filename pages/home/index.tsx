@@ -23,7 +23,7 @@ import Graph from "@/components/Graph";
 import useDataStore from "@/store";
 import { Toast } from "@douyinfe/semi-ui";
 import { useRouter } from "next/router";
-import {nanoid} from "nanoid";
+import { nanoid } from "nanoid";
 
 dayjs.extend(isoWeek);
 const inter = Inter({ subsets: ["latin"] });
@@ -252,8 +252,8 @@ export default function Home() {
       value.length === 4
         ? "YYYY"
         : value.length === 7
-        ? "YYYY-MM"
-        : "YYYY-MM-DD";
+          ? "YYYY-MM"
+          : "YYYY-MM-DD";
     return dayjs(date).format(dateFormat) === value;
   }
 
@@ -263,11 +263,11 @@ export default function Home() {
   }, []);
 
   const handleSubmit = async (values) => {
-    const id =  nanoid()
+    const id = nanoid()
     // console.log(values);
     const formatData = {
       ...values,
-      key:id,
+      key: id,
       date: dayjs(values.data).toString(),
     };
     const result = await fetch("/api/addData", {
@@ -346,14 +346,14 @@ export default function Home() {
           style={{ maxWidth: 450 }}
           onFinish={handleSubmit}
         >
-          <Form.Item name="role" label="家庭成员">
+          <Form.Item name="role" label="家庭成员" rules={[{ required: true, message: '请选择家庭成员' }]}>
             <Select>
               <Select.Option value="爸爸">爸爸</Select.Option>
               <Select.Option value="妈妈">妈妈</Select.Option>
               <Select.Option value="孩子">孩子</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name="moneytype" label="支出/收入">
+          <Form.Item name="moneytype" label="支出/收入" rules={[{ required: true, message: '请选择支出/收入类型' }]}>
             <Select
               onChange={(value) => {
                 setMoneyType(value);
@@ -364,7 +364,7 @@ export default function Home() {
             </Select>
           </Form.Item>
           {moneyType === "支出" && (
-            <Form.Item name="type" label="类别">
+            <Form.Item name="type" label="类别" rules={[{ required: true, message: '请选择支出类别' }]}>
               <Select>
                 <Select.Option value="三餐">三餐</Select.Option>
                 <Select.Option value="日用品">日用品</Select.Option>
@@ -378,7 +378,7 @@ export default function Home() {
             </Form.Item>
           )}
           {moneyType === "收入" && (
-            <Form.Item name="type" label="类别">
+            <Form.Item name="type" label="类别" rules={[{ required: true, message: '请选择收入类别' }]}>
               <Select>
                 <Select.Option value="工资">工资</Select.Option>
                 <Select.Option value="投资">投资</Select.Option>
@@ -387,14 +387,14 @@ export default function Home() {
               </Select>
             </Form.Item>
           )}
-          <Form.Item name="date" label="日期">
+          <Form.Item name="date" label="日期" rules={[{ required: true, message: '请选择日期' }]}>
             <DatePicker
               onChange={(date, dateString) => {
                 console.log(date, "string", dateString);
               }}
             />
           </Form.Item>
-          <Form.Item name="money" label="价值">
+          <Form.Item name="money" label="价值" rules={[{ required: true, message: '请输入价值' }]}>
             <InputNumber prefix="￥" style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item>
