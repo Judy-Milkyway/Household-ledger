@@ -17,10 +17,12 @@
     "echarts": "^5.5.0",
     "echarts-for-react": "^3.0.2",
     "js-cookie": "^3.0.5",
+    "mysql2": "^3.10.0",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
-    "sass": "^1.77.2"
+    "sass": "^1.77.2",
+    "sequelize": "^6.37.3"
   },
   "devDependencies": {
     "@types/node": "^20",

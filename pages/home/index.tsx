@@ -11,7 +11,7 @@ import {
   Table,
   TableProps,
 } from "antd/lib";
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { Menu } from "antd";
@@ -220,6 +220,15 @@ export default function Home() {
     return dayjs(date).format(dateFormat) === value;
   }
 
+  const getData = async () =>{
+    const data = await fetch('/api/data')
+    console.log(data)
+  }
+
+
+  useEffect(()=>{
+    getData()
+  },[])
 
 
   const items = [
