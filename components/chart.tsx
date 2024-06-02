@@ -25,7 +25,7 @@ const Page: React.FC = () => {
 
     const expenditures = Array.from({ length: daysInMonth }, () => 0);
 
-    data.forEach(record => {
+    data?.forEach(record => {
       const recordDate = dayjs(record.date);
       if (recordDate.month() === currentMonth && recordDate.year() === currentYear && record.moneytype === "支出") {
         const day = recordDate.date();
@@ -44,7 +44,7 @@ const Page: React.FC = () => {
 
     const income = Array.from({ length: daysInMonth }, () => 0);
 
-    data.forEach(record => {
+    data?.forEach(record => {
       const recordDate = dayjs(record.date);
       if (recordDate.month() === currentMonth && recordDate.year() === currentYear && record.moneytype === "收入") {
         const day = recordDate.date();

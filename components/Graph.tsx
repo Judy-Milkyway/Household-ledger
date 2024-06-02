@@ -9,7 +9,7 @@ export default function Graph() {
   const data = useDataStore((state) => state.data)
 
   const getInitialOptions = () => {
-    const expenditureByType = data.filter(item => item.moneytype === '支出')
+    const expenditureByType = data?.filter(item => item.moneytype === '支出')
       .reduce((acc, curr) => {
         acc[curr.type] = (acc[curr.type] || 0) + curr.money;
         return acc;
@@ -97,7 +97,7 @@ export default function Graph() {
 
     if (value[0] === '收入') {
       if (value[1] === '家庭成员') {
-        const membersIncome = data.filter(item => item.moneytype === '收入')
+        const membersIncome = data?.filter(item => item.moneytype === '收入')
           .reduce((acc, curr) => {
             acc[curr.role] = (acc[curr.role] || 0) + curr.money;
             return acc;
@@ -142,7 +142,7 @@ export default function Graph() {
           ],
         });
       } else if (value[1] === '收入类别') {
-        const typeIncome = data.filter(item => item.moneytype === '收入')
+        const typeIncome = data?.filter(item => item.moneytype === '收入')
           .reduce((acc, curr) => {
             acc[curr.type] = (acc[curr.type] || 0) + curr.money;
             return acc;
@@ -189,7 +189,7 @@ export default function Graph() {
       }
     } else if (value[0] === '支出') {
       if (value[1] === '家庭成员') {
-        const membersExpenditure = data.filter(item => item.moneytype === '支出')
+        const membersExpenditure = data?.filter(item => item.moneytype === '支出')
           .reduce((acc, curr) => {
             acc[curr.role] = (acc[curr.role] || 0) + curr.money;
             return acc;
@@ -234,7 +234,7 @@ export default function Graph() {
           ],
         });
       } else if (value[1] === '支出类别') {
-        const typeExpenditure = data.filter(item => item.moneytype === '支出')
+        const typeExpenditure = data?.filter(item => item.moneytype === '支出')
           .reduce((acc, curr) => {
             acc[curr.type] = (acc[curr.type] || 0) + curr.money;
             return acc;

@@ -18,7 +18,7 @@ export default function General() {
     let totalIncome = 0;
     let totalExpenditure = 0;
 
-    data.forEach(record => {
+    data?.forEach(record => {
       const recordDate = dayjs(record.date);
       if (recordDate.month() === currentMonth && recordDate.year() === currentYear) {
         if (record.moneytype === "收入") {

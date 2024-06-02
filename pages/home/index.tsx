@@ -13,7 +13,7 @@ import {
 } from "antd/lib";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import dayjs, { Dayjs } from "dayjs";
-import isoWeek from 'dayjs/plugin/isoWeek';
+import isoWeek from "dayjs/plugin/isoWeek";
 import { Menu } from "antd";
 import { MenuItemType } from "antd/es/menu/interface";
 import dynamic from "next/dynamic";
@@ -21,6 +21,7 @@ import General from "@/components/General";
 import { DataType } from "@/mock/data";
 import Graph from "@/components/Graph";
 import useDataStore from "@/store";
+import { Toast } from "@douyinfe/semi-ui";
 
 dayjs.extend(isoWeek);
 const inter = Inter({ subsets: ["latin"] });
@@ -29,9 +30,8 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   const [moneyType, setMoneyType] = useState("支出");
   const [showType, setShowType] = useState("1");
-  const [data, fetchData] = useDataStore((state) => [state.data, state.fetch])
-  console.log(data)
-
+  const [data = [], fetchData] = useDataStore((state) => [state.data, state.fetch]);
+  console.log(data);
 
   const showDrawer = () => {
     setOpen(true);
@@ -167,13 +167,25 @@ export default function Home() {
       },
     },
     {
-      title: '操作',
-      key: '操作',
-      render: (_, record) => (
-        <a>删除</a>
-      ),
+      title: "操作",
+      key: "操作",
+      render: (_, record) => {
+        const handleDelete = async () => {
+          const result = await fetch("/api/deleteData", {
+            method: "delete",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ key: record.key }),
+          });
+          useDataStore.setState((state) => ({
+            data: state.data.filter((old) => old.key !== record.key),
+          }));
+          Toast.success("删除成功");
+        };
+        return <a onClick={handleDelete}>删除</a>;
+      },
     },
-
   ];
 
   function getDateFilters() {
@@ -182,7 +194,7 @@ export default function Home() {
     const weeks = new Set<string>();
     const days = new Set<string>();
 
-    data.forEach(record => {
+    data.forEach((record) => {
       const date = dayjs(record.date);
       years.add(date.format("YYYY"));
       months.add(date.format("YYYY-MM"));
@@ -192,55 +204,70 @@ export default function Home() {
 
     return [
       {
-        text: 'Year',
-        value: 'year',
-        children: Array.from(years).map(year => ({ text: year, value: year })),
+        text: "Year",
+        value: "year",
+        children: Array.from(years).map((year) => ({
+          text: year,
+          value: year,
+        })),
       },
       {
-        text: 'Month',
-        value: 'month',
-        children: Array.from(months).map(month => ({ text: month, value: month })),
+        text: "Month",
+        value: "month",
+        children: Array.from(months).map((month) => ({
+          text: month,
+          value: month,
+        })),
       },
       {
-        text: 'Week',
-        value: 'week',
-        children: Array.from(weeks).map(week => ({ text: week, value: week })),
+        text: "Week",
+        value: "week",
+        children: Array.from(weeks).map((week) => ({
+          text: week,
+          value: week,
+        })),
       },
       {
-        text: 'Day',
-        value: 'day',
-        children: Array.from(days).map(day => ({ text: day, value: day })),
+        text: "Day",
+        value: "day",
+        children: Array.from(days).map((day) => ({ text: day, value: day })),
       },
     ];
   }
 
   function filterByDate(value: string, date: string) {
-    if (value.includes('W')) {
-      const [year, week] = value.split('-W');
-      return dayjs(date).isoWeekYear() === parseInt(year) && dayjs(date).isoWeek() === parseInt(week);
+    if (value.includes("W")) {
+      const [year, week] = value.split("-W");
+      return (
+        dayjs(date).isoWeekYear() === parseInt(year) &&
+        dayjs(date).isoWeek() === parseInt(week)
+      );
     }
 
-    const dateFormat = value.length === 4 ? 'YYYY' : value.length === 7 ? 'YYYY-MM' : 'YYYY-MM-DD';
+    const dateFormat =
+      value.length === 4
+        ? "YYYY"
+        : value.length === 7
+        ? "YYYY-MM"
+        : "YYYY-MM-DD";
     return dayjs(date).format(dateFormat) === value;
   }
 
   const getData = async () => {
-    const data = await fetch('/api/data')
-    console.log(data)
-  }
-
+    const data = await fetch("/api/data");
+    console.log(data);
+  };
 
   useEffect(() => {
     // getData();
     fetchData();
-  }, [])
-
+  }, []);
 
   const items = [
     { key: "1", label: "当月情况" },
     { key: "2", label: "表格展示" },
     { key: "3", label: "图表展示" },
-    { key: '4', label: '退出登录' }
+    { key: "4", label: "退出登录" },
   ];
 
   return (
@@ -277,11 +304,7 @@ export default function Home() {
             />
           </div>
         )}
-        {
-          showType === '3' && (
-            <Graph />
-          )
-        }
+        {showType === "3" && <Graph />}
       </div>
 
       <Drawer
