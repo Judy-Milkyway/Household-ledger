@@ -23,6 +23,7 @@ import Graph from "@/components/Graph";
 import useDataStore from "@/store";
 import { Toast } from "@douyinfe/semi-ui";
 import { useRouter } from "next/router";
+import {nanoid} from "nanoid";
 
 dayjs.extend(isoWeek);
 const inter = Inter({ subsets: ["latin"] });
@@ -31,9 +32,12 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   const [moneyType, setMoneyType] = useState("支出");
   const [showType, setShowType] = useState("1");
-  const [data = [], fetchData] = useDataStore((state) => [state.data, state.fetch]);
+  const [data = [], fetchData] = useDataStore((state) => [
+    state.data,
+    state.fetch,
+  ]);
   console.log(data);
-  const router = useRouter()
+  const router = useRouter();
 
   const showDrawer = () => {
     setOpen(true);
@@ -42,8 +46,6 @@ export default function Home() {
   const onClose = () => {
     setOpen(false);
   };
-
-
 
   const columns: TableProps<DataType>["columns"] = [
     {
@@ -255,15 +257,32 @@ export default function Home() {
     return dayjs(date).format(dateFormat) === value;
   }
 
-  const getData = async () => {
-    const data = await fetch("/api/data");
-    console.log(data);
-  };
-
   useEffect(() => {
     // getData();
     fetchData();
   }, []);
+
+  const handleSubmit = async (values) => {
+    const id =  nanoid()
+    // console.log(values);
+    const formatData = {
+      ...values,
+      key:id,
+      date: dayjs(values.data).toString(),
+    };
+    const result = await fetch("/api/addData", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...formatData }),
+    });
+    console.log(result);
+    Toast.success("添加成功");
+    useDataStore.setState((state) => ({
+      data: [...state.data, formatData],
+    }));
+  };
 
   const items = [
     { key: "1", label: "当月情况" },
@@ -292,8 +311,8 @@ export default function Home() {
             defaultSelectedKeys={["1"]}
             items={items}
             onClick={(item) => {
-              if(item.key === "4") {
-                router.push('/login')
+              if (item.key === "4") {
+                router.push("/login");
               } else {
                 setShowType(item.key);
               }
@@ -325,15 +344,16 @@ export default function Home() {
           //  wrapperCol={{ span: 14 }}
           layout="horizontal"
           style={{ maxWidth: 450 }}
+          onFinish={handleSubmit}
         >
-          <Form.Item label="家庭成员">
+          <Form.Item name="role" label="家庭成员">
             <Select>
-              <Select.Option value="father">爸爸</Select.Option>
-              <Select.Option value="mother">妈妈</Select.Option>
-              <Select.Option value="child">孩子</Select.Option>
+              <Select.Option value="爸爸">爸爸</Select.Option>
+              <Select.Option value="妈妈">妈妈</Select.Option>
+              <Select.Option value="孩子">孩子</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item label="支出/收入">
+          <Form.Item name="moneytype" label="支出/收入">
             <Select
               onChange={(value) => {
                 setMoneyType(value);
@@ -344,7 +364,7 @@ export default function Home() {
             </Select>
           </Form.Item>
           {moneyType === "支出" && (
-            <Form.Item label="类别">
+            <Form.Item name="type" label="类别">
               <Select>
                 <Select.Option value="三餐">三餐</Select.Option>
                 <Select.Option value="日用品">日用品</Select.Option>
@@ -358,7 +378,7 @@ export default function Home() {
             </Form.Item>
           )}
           {moneyType === "收入" && (
-            <Form.Item label="类别">
+            <Form.Item name="type" label="类别">
               <Select>
                 <Select.Option value="工资">工资</Select.Option>
                 <Select.Option value="投资">投资</Select.Option>
@@ -367,14 +387,14 @@ export default function Home() {
               </Select>
             </Form.Item>
           )}
-          <Form.Item label="日期">
+          <Form.Item name="date" label="日期">
             <DatePicker
               onChange={(date, dateString) => {
                 console.log(date, "string", dateString);
               }}
             />
           </Form.Item>
-          <Form.Item label="价值">
+          <Form.Item name="money" label="价值">
             <InputNumber prefix="￥" style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item>
