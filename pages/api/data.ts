@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   try {
     const data = await Data.findAll();
-    res.status(200).json({ message: "Data inserted successfully", data });
+    res.status(200).json({ message: "Data search successfully", data });
   } catch (error) {
     res
       .status(500)
