@@ -8,6 +8,8 @@ export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
+  // 0 是登陆，1 是注册
+  const [type, setType] = useState(false);
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
@@ -33,7 +35,9 @@ export default function Login() {
             <div className={styles.header}>
               <p className={styles.title}>欢迎回来</p>
               <p className={styles.text}>
-                <span className={styles.text}>登录</span>
+                <span className={styles.text}>
+                  {type === false ? "登陆" : "注册"}
+                </span>
                 <span
                   className={styles.text1}
                   style={{ fontWeight: 600, color: "#333" }}
@@ -64,14 +68,16 @@ export default function Login() {
                 fieldStyle={{ alignSelf: "stretch", padding: 0 }}
               />
             </Form>
-            <a>注册</a>
+            <a onClick={() => setType(!type)}>
+              {type === false ? "注册" : "登陆"}
+            </a>
             <Button
               theme="solid"
               className={styles.button}
               loading={loading}
               onClick={handleLogin}
             >
-              登录
+              {type === false ? "登陆" : "注册"}
             </Button>
           </div>
         </div>

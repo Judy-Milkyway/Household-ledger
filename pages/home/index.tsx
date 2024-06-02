@@ -22,6 +22,7 @@ import { DataType } from "@/mock/data";
 import Graph from "@/components/Graph";
 import useDataStore from "@/store";
 import { Toast } from "@douyinfe/semi-ui";
+import { useRouter } from "next/router";
 
 dayjs.extend(isoWeek);
 const inter = Inter({ subsets: ["latin"] });
@@ -32,6 +33,7 @@ export default function Home() {
   const [showType, setShowType] = useState("1");
   const [data = [], fetchData] = useDataStore((state) => [state.data, state.fetch]);
   console.log(data);
+  const router = useRouter()
 
   const showDrawer = () => {
     setOpen(true);
@@ -290,7 +292,11 @@ export default function Home() {
             defaultSelectedKeys={["1"]}
             items={items}
             onClick={(item) => {
-              setShowType(item.key);
+              if(item.key === "4") {
+                router.push('/login')
+              } else {
+                setShowType(item.key);
+              }
             }}
           ></Menu>
         </div>
