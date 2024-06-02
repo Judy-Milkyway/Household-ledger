@@ -8,7 +8,7 @@ export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
-  // 0 是登陆，1 是注册
+  // 0 是登录，1 是注册
   const [type, setType] = useState(false);
   const [password, setPassword] = useState("");
 
@@ -17,7 +17,7 @@ export default function Login() {
       Cookies.set("token", 123);
 
       setTimeout(() => {
-        Toast.success("登录成功");
+        Toast.success(`${type === false?"登录":"注册"}成功`);
         router.push("/");
       }, 2000);
     } else {
@@ -36,7 +36,7 @@ export default function Login() {
               <p className={styles.title}>欢迎回来</p>
               <p className={styles.text}>
                 <span className={styles.text}>
-                  {type === false ? "登陆" : "注册"}
+                  {type === false ? "登录" : "注册"}
                 </span>
                 <span
                   className={styles.text1}
@@ -69,7 +69,7 @@ export default function Login() {
               />
             </Form>
             <a onClick={() => setType(!type)}>
-              {type === false ? "注册" : "登陆"}
+              {type === false ? "注册" : "登录"}
             </a>
             <Button
               theme="solid"
@@ -77,7 +77,7 @@ export default function Login() {
               loading={loading}
               onClick={handleLogin}
             >
-              {type === false ? "登陆" : "注册"}
+              {type === false ? "登录" : "注册"}
             </Button>
           </div>
         </div>
