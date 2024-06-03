@@ -268,7 +268,7 @@ export default function Home() {
     const formatData = {
       ...values,
       key: id,
-      date: dayjs(values.data).toString(),
+      date: dayjs(values.date).toString(),
     };
     const result = await fetch("/api/addData", {
       method: "post",
