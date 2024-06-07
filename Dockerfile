@@ -39,9 +39,8 @@ ENV NODE_ENV production
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs && \
-    npm install mysql2 --save
+    yarn add mysql2 --save
 
-COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/public ./public
 
 # Set the correct permission for prerender cache
