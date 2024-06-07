@@ -12,19 +12,50 @@ export default function Login() {
   const [type, setType] = useState(false);
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    if (username === "123" && password === "123") {
-      Cookies.set("token", 123);
+  const handleLogin = async () => {
+    if (!type) {
+      try {
+        const { token } = await (
+          await fetch("/api/login", {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              password,
+              username,
+            }),
+          })
+        ).json();
 
-      setTimeout(() => {
-        Toast.success(`${type === false?"登录":"注册"}成功`);
-        router.push("/");
-      }, 2000);
+        Cookies.set("token", token);
+        Toast.success("登陆成功");
+        setTimeout(() => {
+          router.push("/home");
+        }, 2000);
+      } catch (error) {
+        Toast.error("用户名或密码错误");
+      }
     } else {
+      const { token } = await (
+        await fetch("/api/register", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            password,
+            username,
+          }),
+        })
+      ).json();
+      Cookies.set("token", token);
+      Toast.success("注册成功");
       setTimeout(() => {
-        Toast.error("账号或密码错误");
+        router.push("/home");
       }, 2000);
     }
+
   };
 
   return (
