@@ -27,12 +27,13 @@ export default function Login() {
             }),
           })
         ).json();
-
-        Cookies.set("token", token);
-        Toast.success("登陆成功");
-        setTimeout(() => {
-          router.push("/home");
-        }, 2000);
+        if (token) {
+          Cookies.set("token", token);
+          Toast.success("登录成功");
+          setTimeout(() => {
+            router.push("/home");
+          }, 2000);
+        }
       } catch (error) {
         Toast.error("用户名或密码错误");
       }
@@ -55,7 +56,6 @@ export default function Login() {
         router.push("/home");
       }, 2000);
     }
-
   };
 
   return (
