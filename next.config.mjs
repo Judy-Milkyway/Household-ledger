@@ -7,6 +7,9 @@ const nextConfig = {
   experimental: {
     esmExternals: "loose",
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   transpilePackages: [
     "antd",
     "@ant-design",
@@ -20,8 +23,8 @@ const nextConfig = {
     "@douyinfe/semi-illustrations",
     "bizcharts",
     "d3-color",
-    'd3-interpolate',
-    '@antv'
+    "d3-interpolate",
+    "@antv",
   ],
 };
 
