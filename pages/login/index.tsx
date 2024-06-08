@@ -13,6 +13,10 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
+    if (!username || !password) {
+      Toast.error("请输入用户名或密码");
+      return;
+    }
     if (!type) {
       try {
         const { token } = await (
@@ -33,6 +37,8 @@ export default function Login() {
           setTimeout(() => {
             router.push("/home");
           }, 2000);
+        } else {
+          Toast.error("用户名或密码错误");
         }
       } catch (error) {
         Toast.error("用户名或密码错误");
@@ -50,11 +56,13 @@ export default function Login() {
           }),
         })
       ).json();
-      Cookies.set("token", token);
-      Toast.success("注册成功");
-      setTimeout(() => {
-        router.push("/home");
-      }, 2000);
+      if (token) {
+        Cookies.set("token", token);
+        Toast.success("注册成功");
+        setTimeout(() => {
+          router.push("/home");
+        }, 2000);
+      }
     }
   };
 

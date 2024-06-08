@@ -86,8 +86,8 @@ const Page: React.FC = () => {
           type: 'value',
           name: '收入',
           min: 0,
-          max: 7500,
-          interval: 1500,
+          max: 50000,
+          interval: 10000,
           axisLabel: {
             formatter: '¥{value}'
           }
@@ -96,8 +96,8 @@ const Page: React.FC = () => {
           type: 'value',
           name: '支出',
           min: 0,
-          max: 7500,
-          interval: 1500,
+          max: 50000,
+          interval: 10000,
           axisLabel: {
             formatter: '¥{value}'
           }

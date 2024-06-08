@@ -28,8 +28,8 @@ export default async function handler(req, res) {
 
     const user = { id: results, username };
 
-    const token = sign({ userId: user.id }, "your_jwt_secret", {
-      expiresIn: "1h",
+    const token = sign({ userId: user.id, username: user.username }, "your_jwt_secret", {
+      expiresIn: "24h",
     });
 
     res.status(201).json({ message: "User registered successfully", token });

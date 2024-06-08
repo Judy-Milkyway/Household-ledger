@@ -3,7 +3,7 @@ import { DataTypes, Sequelize } from 'sequelize';
 
 const DB_HOST = 'localhost'
 const DB_USER = "root"
-const DB_PASSWORD = "ljy030820.com"
+const DB_PASSWORD = "12345678"
 const DB_NAME = "data"
 const DB_PORT = 3306
 
@@ -42,6 +42,10 @@ export const Data = sequelize.define('Data', {
   },
   money: {
     type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  userid: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
 }, {

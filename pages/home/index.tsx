@@ -280,7 +280,7 @@ export default function Home() {
     console.log(result);
     Toast.success("添加成功");
     useDataStore.setState((state) => ({
-      data: [...state.data, formatData],
+      data: [...state.data ?? [], formatData],
     }));
   };
 
